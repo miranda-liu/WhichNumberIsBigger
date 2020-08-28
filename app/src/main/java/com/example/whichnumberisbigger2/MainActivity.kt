@@ -9,60 +9,38 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    private var score = 0
-    private var randomLeft = (Math.random()*100 + 1).toInt()
-    private var randomRight = (Math.random()*100 + 1).toInt()
 
+    var game = BiggerNumberGame(0, 100)
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        while(randomLeft == randomRight){
-            randomRight = (Math.random()*100 + 1).toInt()
-        }
-        textView_main_score.text = "Score: $score"
-        button_main_left.text = randomLeft.toString()
-        button_main_right.text = randomRight.toString()
+        //construct a new BiggerNumberObject
+        //in Java: Square s = new Square()
+        //in Kotlin: don't need new or to declare the type either
+
+        textView_main_score.text = "Score: ${game.score}"
+        button_main_left.text = game.leftNumber.toString()
+        button_main_right.text = game.rightNumber.toString()
     }
 
-    fun onLeftClick(view: View){
-        if(randomLeft > randomRight){
-            score++
-            Toast.makeText(this, "Good job :)", Toast.LENGTH_LONG).show()
-            textView_main_score.text = "Score: $score"
-        }
-        else{
-            score--
-            Toast.makeText(this, "Wrong choice :(", Toast.LENGTH_LONG).show()
-            textView_main_score.text = "Score: $score"
-        }
-        randomLeft = (Math.random()*100 + 1).toInt()
-        randomRight = (Math.random()*100 + 1).toInt()
-        while(randomLeft == randomRight) {
-            randomRight = (Math.random() * 100 + 1).toInt()
-        }
-        button_main_left.text = randomLeft.toString()
-        button_main_right.text = randomRight.toString()
+    fun updateButtons() {
+        game.generateRandomNumbers()
+        textView_main_score.text = "Score: ${game.score}"
+        button_main_left.text = game.leftNumber.toString()
+        button_main_right.text = game.rightNumber.toString()
     }
 
-    fun onRightClick(view: View){
-        if(randomRight > randomLeft){
-            score++
-            Toast.makeText(this, "Good job :)", Toast.LENGTH_LONG).show()
-            textView_main_score.text = "Score: $score"
-        }
-        else{
-            score--
-            Toast.makeText(this, "Wrong choice :(", Toast.LENGTH_LONG).show()
-            textView_main_score.text = "Score: $score"
-        }
-        randomLeft = (Math.random()*100 + 1).toInt()
-        randomRight = (Math.random()*100 + 1).toInt()
-        while(randomLeft == randomRight) {
-            randomRight = (Math.random() * 100 + 1).toInt()
-        }
-        button_main_left.text = randomLeft.toString()
-        button_main_right.text = randomRight.toString()
+    fun onLeftClick(view: View) {
+        val message = game.checkAnswer(button_main_left.text.toString().toInt())
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        updateButtons()
+    }
+
+    fun onRightClick(view: View) {
+        val message = game.checkAnswer(button_main_right.text.toString().toInt())
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        updateButtons()
     }
 }
 
