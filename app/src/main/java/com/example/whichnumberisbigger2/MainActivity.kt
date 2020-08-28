@@ -8,7 +8,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() { 
 
     var game = BiggerNumberGame(0, 100)
     @SuppressLint("SetTextI18n")
